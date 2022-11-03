@@ -1,4 +1,9 @@
-# MyKogitoDemoDm Project
+# MyKogitoDemoDm Project - demo for IBM Kogito Operator deployments
+
+
+
+
+# Useful infos
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
@@ -66,4 +71,3 @@ Easily start your Reactive RESTful Web Services
 Monitor your application's health using SmallRye Health
 
 [Related guide section...](https://quarkus.io/guides/smallrye-health)
-# MyKogitoDemoDm - demo for IBM Kogito Operator deployments
