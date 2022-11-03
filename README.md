@@ -1,7 +1,102 @@
-# MyKogitoDemoDm Project - demo for IBM Kogito Operator deployments
+# MyKogitoDemoDm Project
 
+Demo for IBM Kogito Operator deployments
 
+## How I built the application
 
+```
+GROUP_ID=marco.demos.kogito
+APP_NAME=MyKogitoDemoDm
+APP_VERSION=1.0.0-SNAPSHOT
+```
+
+```
+quarkus create app ${GROUP_ID}:${APP_NAME} --extension='kogito-quarkus,resteasy-reactive,quarkus-smallrye-openapi,resteasy-reactive-jackson,smallrye-health'
+cd ${APP_NAME}
+```
+
+Then I've created the remote git repo 
+```
+https://github.com/marcoantonioni/MyKogitoDemoDm
+```
+
+and initialized, updated then pushed the initial project structure
+
+```
+echo "# ${APP_NAME} - demo for IBM Kogito Operator deployments" >> README.md
+git init
+git add README.md
+git commit -m "first commit for ${APP_NAME}"
+git branch -M main
+git remote add origin https://github.com/marcoantonioni/${APP_NAME}.git
+git push -u origin main
+```
+
+## The DMN rule
+
+[image]
+
+I then defined a rule in DMN notation, the rule is extremely simple.
+
+The purpose is to validate a request based on the age of the applicant and an amount threshold.
+
+# Build and run
+
+Run a build to verify the code and configuration
+
+```
+quarkus build
+```
+
+Run the app in interactive mode
+
+```
+quarkus dev
+```
+
+## Test locally
+
+Using another shell run the following commands
+
+<i>Note: if you don't have 'jq' tool installed remove the final piping '| jq .'</i>
+
+```
+# set your base URL
+URL=http://localhost:8080
+
+# for the interactive REST gui navigate to http://<your-host-name>/q/swagger-ui/
+
+# do some health check
+curl -X GET ${URL}/q/health -H 'accept: application/json'
+curl -X GET ${URL}/q/health/live -H 'accept: application/json'
+curl -X GET ${URL}/q/health/ready -H 'accept: application/json'
+curl -X GET ${URL}/q/health/group -H 'accept: application/json'
+curl -X GET ${URL}/q/health/group/* -H 'accept: application/json'
+curl -X GET ${URL}/q/health/well -H 'accept: application/json'
+curl -X GET ${URL}/q/health/started -H 'accept: application/json'
+
+# if you want to download the open api schema doc execute
+curl -LO ${URL}/q/openapi
+
+# ping
+curl -s -w"\n" -X GET ${URL}/ping
+
+# set the service name (in this example the DMN rule service))
+SERVICE_NAME=ValidateRequest
+
+# get the rule model
+curl -s -X GET -H 'accept: application/xml' ${URL}/${SERVICE_NAME}
+
+# run a request with requestor values that will be accepted
+curl -s -X POST ${URL}/${SERVICE_NAME} -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "RequestData": { "requestorName": "Marco", "requestorAge": 50, "amount": 10000 } }' | jq .
+
+# run a request with requestor values that will be accepted
+curl -s -X POST ${URL}/${SERVICE_NAME} -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "RequestData": { "requestorName": "baby", "requestorAge": 10, "amount": 10000 } }' | jq .
+```
+
+## Deploy on OpenShift cluster using IBM Kogito Operator
+
+[TBD] See "..." at link "..."
 
 # Useful infos
 
