@@ -4,12 +4,13 @@ Demo for IBM Kogito Operator deployments
 
 ## How I built the application
 
+set some vars
 ```
 GROUP_ID=marco.demos.kogito
 APP_NAME=MyKogitoDemoDm
-APP_VERSION=1.0.0-SNAPSHOT
 ```
 
+create the quarkus project
 ```
 quarkus create app ${GROUP_ID}:${APP_NAME} --extension='kogito-quarkus,resteasy-reactive,quarkus-smallrye-openapi,resteasy-reactive-jackson,smallrye-health'
 cd ${APP_NAME}
